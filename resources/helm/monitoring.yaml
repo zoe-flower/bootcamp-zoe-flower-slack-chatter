@@ -1,0 +1,72 @@
+alerting:
+    alerts:
+      - name: service_restart
+        metric: increase(kube_pod_container_status_restarts_total{pod=~"bootcamp-zoe-flower-slack-chatter.*"}[10m])
+            > 0
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter is restarting
+        description: bootcamp-zoe-flower-slack-chatter is restarting
+        severity: critical
+      - name: goroutines_elevated
+        metric: max(go_goroutines{kubernetes_namespace="flyt", app="bootcamp-zoe-flower-slack-chatter"}
+            > 500) by (app)
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter is running with an elevated number
+            of goroutines indicative of a leak
+        description: bootcamp-zoe-flower-slack-chatter is running with an elevated
+            number of goroutines indicative of a leak
+        severity: high
+      - name: consumer_lag_bootcamp-birthday-today
+        metric: sum(aws_sqs_approximate_number_of_messages_visible_sum{queue_name="event-bus-a1265b33b6bd09e58b3328a6eeda56f9b816344de7ea45d7e094b6a4f9bbdee4"})
+            > 50
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter is unable to process some bootcamp-birthday-today
+            events in a reasonable amount of time
+        description: bootcamp-zoe-flower-slack-chatter is seeing a spike in the time
+            required to process some bootcamp-birthday-today events
+        severity: high
+      - name: deadletters_bootcamp-birthday-today
+        metric: sum(delta(aws_sqs_approximate_number_of_messages_visible_sum{queue_name="event-bus-dlq-a1265b33b6bd09e58b3328a6eeda56f9b816344de7ea45d7e094b6a4f9bbdee4"}[10m]))
+            > 0
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter can't process some "bootcamp-birthday-today"
+            events
+        description: bootcamp-zoe-flower-slack-chatter can't process some "bootcamp-birthday-today"
+            events
+        severity: critical
+      - name: panics_bootcamp-birthday-today
+        metric: sum(increase(eventbus_events_consumer_panics_total{app="bootcamp-zoe-flower-slack-chatter",topic="bootcamp-birthday-today"}[10m]))
+            > 0
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter had a panic handling "bootcamp-birthday-today"
+            events
+        description: bootcamp-zoe-flower-slack-chatter had a panic handling "bootcamp-birthday-today"
+            events
+        severity: critical
+      - name: consumer_lag_bootcamp-user-created
+        metric: sum(aws_sqs_approximate_number_of_messages_visible_sum{queue_name="event-bus-21f8cadf02f4ac1b4eda35fc3de5b0d822e5bd3c393fca4c5d49a56ee9ef70b0"})
+            > 50
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter is unable to process some bootcamp-user-created
+            events in a reasonable amount of time
+        description: bootcamp-zoe-flower-slack-chatter is seeing a spike in the time
+            required to process some bootcamp-user-created events
+        severity: high
+      - name: deadletters_bootcamp-user-created
+        metric: sum(delta(aws_sqs_approximate_number_of_messages_visible_sum{queue_name="event-bus-dlq-21f8cadf02f4ac1b4eda35fc3de5b0d822e5bd3c393fca4c5d49a56ee9ef70b0"}[10m]))
+            > 0
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter can't process some "bootcamp-user-created"
+            events
+        description: bootcamp-zoe-flower-slack-chatter can't process some "bootcamp-user-created"
+            events
+        severity: critical
+      - name: panics_bootcamp-user-created
+        metric: sum(increase(eventbus_events_consumer_panics_total{app="bootcamp-zoe-flower-slack-chatter",topic="bootcamp-user-created"}[10m]))
+            > 0
+        period: 2m
+        summary: bootcamp-zoe-flower-slack-chatter had a panic handling "bootcamp-user-created"
+            events
+        description: bootcamp-zoe-flower-slack-chatter had a panic handling "bootcamp-user-created"
+            events
+        severity: critical

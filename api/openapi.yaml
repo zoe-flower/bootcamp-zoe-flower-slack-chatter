@@ -1,0 +1,71 @@
+openapi: 3.0.0
+info:
+  description: 'bootcamp-zoe-flower-slack-chatter'
+  title: 'bootcamp-zoe-flower-slack-chatter'
+  version: '0.0.1'
+servers:
+  - url: https://bootcamp-zoe-flower-slack-chatter.flyt-platform.com
+    description: Production environment
+  - url: https://bootcamp-zoe-flower-slack-chatter.flyt-staging.com
+    description: Staging environment
+  - url: https://bootcamp-zoe-flower-slack-chatter-{namespace}.flyt-dev.com
+    description: Development environment
+    variables:
+      namespace:
+        default: username
+        description: The namespace of the development service, usually your username.
+
+paths:
+  /user/{id}:
+    get:
+      summary: Get a user by ID
+      operationId: UserGet
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User returned
+        '404':
+          description: User not found
+  /user:
+    post:
+      summary: Add a new user
+      operationId: UserAdd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User successfully added
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Flyt-Api-Key
+
+  schemas:
+    User:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - email
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+
+security:
+  - ApiKeyAuth: []

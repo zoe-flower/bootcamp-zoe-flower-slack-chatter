@@ -1,0 +1,58 @@
+http:
+    replicaCount: 1
+    env_vars:
+        CONFIG_APP_RUN_HTTP: "true"
+consumer:
+    replicaCount: 1
+    queues:
+        sqs-hashed-bootcamp-birthday-today:
+            replicaCount: 1
+            env_vars:
+                CONFIG_APP_EVENT_HANDLER_TIMEOUT: 30s
+                CONFIG_APP_EVENT_VISIBILITY_TIMEOUT: 35s
+                CONFIG_APP_EVENT_WORKER_POOL: "25"
+                CONFIG_APP_RUN_CONSUMER: "true"
+                CONFIG_EVENT_BUS_SQS_QUEUE_NAME: event-bus-a1265b33b6bd09e58b3328a6eeda56f9b816344de7ea45d7e094b6a4f9bbdee4
+                CONFIG_EVENT_BUS_SQS_TOPIC_NAME: bootcamp-birthday-today
+            resources:
+                requests:
+                    cpu: 50m
+                    memory: "52428800"
+                limits:
+                    cpu: 50m
+                    memory: "52428800"
+        sqs-hashed-bootcamp-user-created:
+            replicaCount: 1
+            env_vars:
+                CONFIG_APP_EVENT_HANDLER_TIMEOUT: 30s
+                CONFIG_APP_EVENT_VISIBILITY_TIMEOUT: 35s
+                CONFIG_APP_EVENT_WORKER_POOL: "25"
+                CONFIG_APP_RUN_CONSUMER: "true"
+                CONFIG_EVENT_BUS_SQS_QUEUE_NAME: event-bus-21f8cadf02f4ac1b4eda35fc3de5b0d822e5bd3c393fca4c5d49a56ee9ef70b0
+                CONFIG_EVENT_BUS_SQS_TOPIC_NAME: bootcamp-user-created
+            resources:
+                requests:
+                    cpu: 50m
+                    memory: "52428800"
+                limits:
+                    cpu: 50m
+                    memory: "52428800"
+ingress:
+    hosts: []
+    plugins:
+        rate_limiting:
+            redis_host: cache-kong-ingress-primary.resources.flyt-staging.com
+env_vars:
+    AWS_STS_REGIONAL_ENDPOINTS: regional
+    CONFIG_APP_IN_PROD: "false"
+    CONFIG_APP_SERVICE_HOSTNAME_FORMAT: https://%s.flyt-staging.com
+    CONFIG_APP_TIER: Undefined
+    CONFIG_AWS_ACCOUNT_ID: "364123201955"
+    CONFIG_DYNAMIC_TASK_ARN: arn:aws:states:eu-west-1:364123201955:stateMachine:dev-tool-dynamic-tasks
+    CONFIG_XRAY_DAEMON: udp:xray-daemon.monitoring.svc.cluster.local.:2000 tcp:xray-daemon-proxy.monitoring.svc.cluster.local.:2001
+app:
+    environment: staging
+event_bus:
+    bootstrap_servers: ""
+aws:
+    account_id: "364123201955"

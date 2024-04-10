@@ -1,0 +1,85 @@
+{
+    "name": "bootcamp-zoe-flower-slack-chatter",
+    "https": {
+        "enabled": false,
+        "type": "api",
+        "allowed_payload_size": 1,
+        "rate_limit_second": 5,
+        "timeout_second": 5,
+        "pod_resources": {
+            "cpu": "small",
+            "memory": "small"
+        },
+        "min_replicas": 3,
+        "max_replicas": 50,
+        "go_memlimit": 100
+    },
+    "http_client": false,
+    "event_bus": {
+        "consumer": true,
+        "producer": false,
+        "consumes_topics": [
+            {
+                "name": "bootcamp-birthday-today",
+                "go_name": "bootcamp.BirthdayToday",
+                "path": "github.com/flypay/events/pkg/bootcamp/birthday.pb.go#L104",
+                "timeout": 30,
+                "retry_count": 5,
+                "worker_pool": 25,
+                "replica_count": 3,
+                "pod_resources": {
+                    "cpu": "small",
+                    "memory": "small"
+                },
+                "consumer_lag_alert": {
+                    "number_of_messages": 50,
+                    "time_period": "2m"
+                }
+            },
+            {
+                "name": "bootcamp-user-created",
+                "go_name": "bootcamp.UserCreated",
+                "path": "github.com/flypay/events/pkg/bootcamp/birthday.pb.go#L24",
+                "timeout": 30,
+                "retry_count": 5,
+                "worker_pool": 25,
+                "replica_count": 3,
+                "pod_resources": {
+                    "cpu": "small",
+                    "memory": "small"
+                },
+                "consumer_lag_alert": {
+                    "number_of_messages": 50,
+                    "time_period": "2m"
+                }
+            }
+        ]
+    },
+    "resources": {
+        "databases": [
+            {
+                "name": "default",
+                "attributes": null,
+                "indexes": null
+            }
+        ]
+    },
+    "env_vars": {
+        "development": {},
+        "staging": {},
+        "production": {}
+    },
+    "pod_resources": {},
+    "tests": {
+        "integration": true
+    },
+    "team": "jetc-tooling",
+    "alerts": [],
+    "dev_tool_version": "4.117.0",
+    "capability_flow": null,
+    "tier": "Undefined",
+    "production_traffic": false,
+    "use_gha": true,
+    "is_ghe": false,
+    "disable_sentry": false
+}
