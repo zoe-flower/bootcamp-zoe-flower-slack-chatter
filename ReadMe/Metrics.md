@@ -1,4 +1,4 @@
 ---
-dashboardURL: "xxx"
+dashboardURL: xxx
 ---
 
