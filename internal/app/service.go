@@ -12,7 +12,8 @@ import (
 	"github.com/flypay/go-kit/v4/pkg/projections"
 )
 
-// DOES THIS MIRROR
+// DOES THIS MIRROR TEST COMMENT
+
 // only cosumes events and add adds to db
 // passes db to handler
 // consumes two events via a map
